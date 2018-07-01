@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Repositories\Feedback\FeedbackInterface;
 use Illuminate\Http\Request;
 use App\Http\Requests\FeedbackRequest;
+use App\Models\Feedback;
 use DB;
 use Exception;
+use Auth;
+use Session;
 
 class FeedbackController extends Controller
 {
@@ -15,96 +18,84 @@ class FeedbackController extends Controller
     public function __construct(FeedbackInterface $feedbackRepository)
     {
         $this->feedbackRepository = $feedbackRepository;
+        $this->middleware('profile', ['except' => ['store']]);
     }
 
     public function index()
     {
-        $feedbacks = $this->feedbackRepository->paginate();
-
-        return view('admin.pages.feedbacks.list', compact('feedbacks'));
-    }
-
-    public function create(FeedbackRequest $request)
-    {
-        $value = $request->only('name','email','content');
-
-        DB::beginTransaction();
-        try {
-            $this->feedbackRepository->create($value);
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollback();
-
-            return redirect()->action('SurveyController@index')
-                ->with('message', trans_choice('messages.object_created_unsuccessfully', 4));
+        if (Auth::user()->cannot('viewAll', Feedback::class)) {
+            return view('clients.layout.403');
         }
 
-        return redirect()->action('SurveyController@index')
-            ->with('message', trans_choice('messages.object_created_successfully', 4));
+        $feedbacks = $this->feedbackRepository->getFeedbacks();
+        $user = Auth::user();
+        Session::put('page_profile_active', config('settings.page_profile_active.list_feedback'));
+
+        return view('clients.feedback.index', compact('feedbacks', 'user'));
     }
 
-    public function update(Request $request)
+    public function store(FeedbackRequest $request)
     {
-        $success = false;
-
         if (!$request->ajax()) {
             return response()->json([
-                'success' => $success,
+                'success' => false,
             ]);
         }
 
-        $id = $request->get('id');
         DB::beginTransaction();
+
         try {
-            if (!$request->get('status')) {
-                $this->feedbackRepository->update($id, [
-                    'status' => true,
-                ]);
-
-                DB::commit();
-            }
-
-            $success = true;
+            $feedbackData =  $request->only('name', 'email', 'content');
+            $this->feedbackRepository->create($feedbackData);
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => trans('lang.send_feedback_success', ['name' => $feedbackData['name']]),
+            ]);
         } catch (Exception $e) {
             DB::rollback();
+
+            return response()->json([
+                'success' => false,
+                'message' => trans('lang.send_feedback_error'),
+            ]);
         }
-
-        return response()->json([
-            'success' => $success,
-        ]);
-    }
-
-    public function show($id)
-    {
-        $feedback = $this->feedbackRepository->find($id);
-
-        if (!$feedback) {
-            return redirect()->action('ReviewController@index')
-                ->with('message', trans('messages.object_not_found', 4));
-        }
-
-        return view('admin.pages.feedbacks.detail', compact('feedback'));
     }
 
     public function destroy($id)
     {
-        DB::beginTransaction();
         try {
-            $this->feedbackRepository->delete($id);
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollback();
+            $feedback = $this->feedbackRepository->findOrFail($id);
 
-            return redirect()->action('ReviewController@index')
-                ->with('message', trans('messages.object_deleted_unsuccessfully', 4));
+            if (Auth::user()->cannot('delete', $feedback)) {
+                return view('clients.layout.403');
+            }
+
+            $feedback->delete();
+            Session::flash('success', trans('lang.delete_feedback_success'));
+        } catch (Exception $e) {
+            Session::flash('error', trans('lang.delete_feedback_error'));
         }
 
-        return redirect()->action('ReviewController@index')
-            ->with('message', trans('messages.object_deleted_successfully', 4));
+        return redirect()->back();
     }
 
-    public function getFeedback()
+    public function getListFeedback(Request $request)
     {
-        return view('user.pages.feedback');
+        if (!$request->ajax()) {
+            return response()->json([
+                'success' => false,
+            ]);
+        }
+
+        $data = $request->only('name', 'condition_search');
+        $feedbacks = $this->feedbackRepository->getFeedbacks($data);
+        $html = view('clients.feedback.list_feedback', compact('feedbacks'))->render();
+
+        return response()->json([
+            'success' => true,
+            'html' => $html,
+        ]);
     }
 }

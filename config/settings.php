@@ -150,6 +150,7 @@ return [
     'page_profile_active' => [
         'information' => '1',
         'list_survey' => '2',
+        'list_feedback' => '3',
     ],
     'vn' => 'vn',
     'fsurvey' => 'FSurvey',
@@ -327,4 +328,11 @@ return [
     ],
     'link_doing' => '.../surveys-',
     'link_manage' => '.../management-survey/',
+    'feedbacks' => [
+        'condition_search' => [
+            'all' => 0,
+            'by_name' => 1,
+            'by_email' => 2,
+        ]
+    ]
 ];

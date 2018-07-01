@@ -4,5 +4,5 @@ namespace App\Repositories\Feedback;
 
 interface FeedbackInterface
 {
-    public function create($input);
+    public function getFeedbacks($data = []);
 }

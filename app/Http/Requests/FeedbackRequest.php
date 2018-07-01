@@ -34,19 +34,19 @@ class FeedbackRequest extends FormRequest
     {
         return [
             'content.required' => trans('validation.required', [
-                'attribute' => class_basename(Feedback::class)
+                'attribute' => trans('lang.feedback_content'),
             ]),
             'name.required' => trans('validation.required', [
-                'attribute' => class_basename(Feedback::class)
+                'attribute' => trans('lang.name'),
             ]),
             'name.max' => trans('validation.max.string', [
-                'attribute' => class_basename(Feedback::class)
+                'attribute' => trans('lang.name'),
             ]),
             'email.required' => trans('validation.required', [
-                'attribute' => class_basename(Feedback::class)
+                'attribute' => trans('lang.email'),
             ]),
             'email.max' => trans('validation.max.string', [
-                'attribute' => class_basename(Feedback::class)
+                'attribute' => trans('lang.email'),
             ]),
         ];
     }

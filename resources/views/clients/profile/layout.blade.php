@@ -45,6 +45,15 @@
                                     <div class="col-lg-5 offset-lg-2 col-md-5 offset-md-2 list-profile-menu">
                                         @if (Auth::user() == $user)
                                             <ul class="profile-menu">
+                                                @if (Auth::user()->isAdmin())
+                                                    <li>
+                                                        <a href="{{ route('feedbacks.index') }}" 
+                                                            class="{{ Session::get('page_profile_active') ==
+                                                            config('settings.page_profile_active.list_feedback')
+                                                            ? 'active' : '' }}">@lang('lang.list_feedback')
+                                                        </a>
+                                                    </li>
+                                                @endif
                                                 <li>
                                                     <a href="{{ route('surveys.create') }}">@lang('lang.create_survey')</a>
                                                 </li>

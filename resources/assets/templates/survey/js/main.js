@@ -170,4 +170,34 @@
     $(document).on('mouseover', '.complete-content .copy-link-manage', function () {
         $(this).find('.tooltiptext').text(Lang.get('lang.copy_link'));
     });
+
+    $(document).on('submit', '#form-feedback', function (e) {
+        e.preventDefault();
+        $.ajax({
+            method: $(this).attr('method'),
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            dataType: 'json'
+        })
+        .done(function (data) {
+            if (data.success) {
+                $('#modal-feedback').modal('hide');
+                alertSuccess({message: data.message}, function () {
+                    location.reload();
+                });
+            } else {
+                alertDanger({message: data.message});
+            }
+        })
+        .fail(function (data) {
+            var errors = data.responseJSON;
+            $('.feedback-name-messages').text(errors.name);
+            $('.feedback-email-messages').text(errors.email);
+            $('.feedback-content-messages').text(errors.content);
+        });
+    });
+
+    $('.modal-body').on('focus', 'input.validate, textarea.validate', function () {
+        $(this).parent().find('.help-block').text('');
+    });
 });

@@ -48,7 +48,11 @@
                                     {{ Html::link(route('home'), trans('lang.home'), ['class' => 'nav-link']) }}
                                 </li>
                                 <li class="nav-item">
-                                    {{ Html::link('#', trans('lang.feedback'), ['class' => 'nav-link']) }}
+                                    {{ Html::link('#', trans('lang.feedback'), [
+                                        'class' => 'nav-link',
+                                        'data-toggle' => 'modal',
+                                        'data-target' => '#modal-feedback',
+                                    ]) }}
                                 </li>
                                 @if (!Auth::guard()->check())
                                     <li class="nav-item">
@@ -136,6 +140,11 @@
                                             <li>
                                                 {!! html_entity_decode(Html::link( route('survey.survey.show-surveys'), '<i class="fa fa-list"></i> ' . trans('lang.my_surveys'), ['class' => 'dropdown-item'])) !!}
                                             </li>
+                                            @if (Auth::user()->isAdmin())
+                                                <li>
+                                                    {!! html_entity_decode(Html::link(route('feedbacks.index'), '<i class="fa fa-comments"></i> ' . trans('lang.list_feedback'), ['class' => 'dropdown-item'])) !!}
+                                                </li>
+                                            @endif
                                             <li>
                                                 {!! html_entity_decode(Html::link(route('survey.profile.index'), '<i class="fa fa-user"></i> ' . trans('profile.profile'), ['class' => 'dropdown-item'])) !!}
                                             </li>

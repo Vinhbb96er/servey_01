@@ -30,6 +30,30 @@ $(document).ready(function () {
     $(document).on('click', '.btn-search-survey', function (e) {
         listSurvey(url);
     });
+
+    $(document).on('submit', '.form-search-list-survey', function (e) {
+        e.preventDefault();
+        listSurvey(url);
+    });
+
+    $(document).on('click', '.delete-feedback-btn', function (e) {
+        e.preventDefault();
+        var element = $(this);
+
+        confirmWarning({message: Lang.get('lang.confirm_delete_feedback')}, function () {
+            element.next('.delete-feedback-form').submit();
+        })
+    });
+
+    $(document).on('click', '.feedback-detail-btn', function (e) {
+        e.preventDefault();
+        var modal = $('#modal-feedback-detail');
+
+        modal.find('input.feedback-detail-name').val($(this).closest('tr').find('.feedback-name').attr('val'));
+        modal.find('input.feedback-detail-email').val($(this).closest('tr').find('.feedback-email').attr('val'));
+        modal.find('textarea.feedback-detail-content').val($(this).closest('tr').find('.feedback-content').attr('val'));
+        modal.modal('show');
+    });
 });
 
 function listSurvey(url, flag = 'form-search') {

@@ -389,3 +389,14 @@ Route::group(['error'], function () {
 
     Route::get('/error/403', 'Survey\ErrorController@error403')->name('403');
 });
+
+Route::resource('/feedbacks', 'FeedbackController', [
+    'only' => [
+        'index',
+        'destroy',
+        'store',
+    ]
+]);
+
+Route::get('/list-feedback', 'FeedbackController@getListFeedback')
+    ->name('ajax-list-feedback');

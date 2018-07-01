@@ -28,7 +28,7 @@ return [
     'new_password' => 'Mật khẩu mới',
     're_type_password' => 'Nhập lại mật khẩu',
     'information' => 'Thông tin',
-    'list_survey' => 'Danh sách survey',
+    'list_survey' => 'Danh sách khảo sát',
     'update_profile_photo' => 'Cập nhật ảnh đại diện',
     'account_settings' => 'Cài đặt tài khoản',
     'personal_info' => 'Thông tin cá nhân',

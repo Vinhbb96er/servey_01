@@ -3022,3 +3022,47 @@ img.fnone {
     color: #fff;
 
 }
+
+#btn-feedback {
+    margin-top: 5px;
+}
+
+#modal-feedback .feedback-content,
+#modal-feedback-detail .feedback-detail-content {
+    padding: .75rem !important;
+    overflow-y: auto;
+}
+
+#modal-feedback .modal-body {
+    margin-bottom: 10px;
+}
+
+#modal-feedback .modal-dialog {
+    max-width: 500px !important;
+}
+
+#modal-feedback-detail .feedback-detail-label {
+    color: #4285f4;
+}
+
+.feedback-name, .feedback-email {
+    color: #1875f0;
+}
+
+#modal-feedback .feedback-content::-webkit-scrollbar-track,
+#modal-feedback-detail .feedback-detail-content::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+#modal-feedback .feedback-content::-webkit-scrollbar,
+#modal-feedback-detail .feedback-detail-content::-webkit-scrollbar {
+    width: 3px;
+    background-color: #F5F5F5;
+}
+
+#modal-feedback .feedback-content::-webkit-scrollbar-thumb,
+#modal-feedback-detail .feedback-detail-content::-webkit-scrollbar-thumb {
+    background-color: #4285f4;
+    border-radius: 10px;
+}

@@ -7,4 +7,5 @@
     @include('clients.user.auth.login')
     @include('clients.user.auth.forgot-password')
 @endif
+@include('clients.feedback.create')
 @include('clients.layout.footer')

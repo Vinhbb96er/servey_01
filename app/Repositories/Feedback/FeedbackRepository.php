@@ -12,14 +12,25 @@ class FeedbackRepository extends BaseRepository implements FeedbackInterface
         return Feedback::class;
     }
 
-    public function create($input)
+    public function getFeedbacks($data = [])
     {
-        parent::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'content' => $input['content'],
-        ]);
+        $feedbacks = $this->model;
 
-        return true;
+        if (!empty($data['name'])) {
+            switch ($data['condition_search']) {
+                case config('settings.feedbacks.condition_search.all'):
+                    $feedbacks = $feedbacks->where('name', 'like', '%' . $data['name'] . '%')
+                        ->orWhere('email', 'like', '%' . $data['name'] . '%');
+                    break;
+                case config('settings.feedbacks.condition_search.by_name'):
+                    $feedbacks = $feedbacks->where('name', 'like', '%' . $data['name'] . '%');
+                    break;
+                case config('settings.feedbacks.condition_search.by_email'):
+                    $feedbacks = $feedbacks->where('email', 'like', '%' . $data['name'] . '%');
+                    break;
+            }
+        }
+
+        return $feedbacks->orderBy('created_at', 'desc')->paginate();
     }
 }

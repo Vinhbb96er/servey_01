@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Policies\ProfilePolicy;
 use App\Policies\SurveyPolicy;
+use App\Policies\FeedbackPolicy;
 use App\Models\User;
 use App\Models\Survey;
+use App\Models\Feedback;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -19,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         User::class => ProfilePolicy::class,
         Survey::class => SurveyPolicy::class,
+        Feedback::class => FeedbackPolicy::class,
     ];
 
     /**
@@ -29,7 +32,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
     }
 }
