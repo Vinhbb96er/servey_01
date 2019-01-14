@@ -24,25 +24,32 @@ class SurveyRequest extends FormRequest
      */
     public function rules()
     {
+        $settingAnswerRequired = implode(',', config('settings.survey_setting.answer_required'));
+        $settingReminderEmailType = implode(',', config('settings.survey_setting.reminder_email'));
+        $settingPrivacy = implode(',', config('settings.survey_setting.privacy'));
+        $settingSendMailToWsm = implode(',', config('settings.survey.send_mail_to_wsm'));
+        $questionTypes =  implode(',', array_diff(config('settings.question_type'), [config('settings.question_type.no_type')]));
+        $answerTypes = implode(',', config('settings.answer_type'));
+
         $rules = [
             'title' => 'required|max:255',
             'start_time' => 'date',
             'end_time' => 'date|after:start_time',
-            'setting.answer_required' => 'required|integer|between:0,2',
+            'setting.answer_required' => "required|integer|in:{$settingAnswerRequired}",
             'setting.answer_limited' => 'required|integer|min:0',
-            'setting.reminder_email.type' => 'required|integer|between:0,4',
+            'setting.reminder_email.type' => "required|integer|in:{$settingReminderEmailType}",
             'setting.reminder_email.next_time' => 'date|after:start_time',
-            'setting.privacy' => 'required|integer|between:1,2',
+            'setting.privacy' => "required|integer|in:{$settingPrivacy}",
             'invited_email.subject' => 'required',
-            'invited_email.send_mail_to_wsm' => 'required|integer|between:0,1',
+            'invited_email.send_mail_to_wsm' => "required|integer|in:{$settingSendMailToWsm}",
             'invited_email.emails.*' => 'email|distinct',
             'members.*.email' => 'email|distinct',
             'members.*.role' => 'integer|in:1',
             'sections.*.title' => 'required|distinct',
             'sections.*.questions.*.media' => 'url',
-            'sections.*.questions.*.type' => 'required|integer|between:1,9',
+            'sections.*.questions.*.type' => "required|integer|in:{$questionTypes}",
             'sections.*.questions.*.require' => 'required|boolean',
-            'sections.*.questions.*.answers.*.type' => 'required|integer|between:1,2',
+            'sections.*.questions.*.answers.*.type' => "required|integer|in:{$answerTypes}",
             'sections.*.questions.*.answers.*.media' => 'url',
         ];
 

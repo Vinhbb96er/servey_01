@@ -3,7 +3,10 @@
     <li class="p-0">
         <div class="form-header">
             <div class="section-badge section-option-menu">
-                <span class="number-of-section">@lang('lang.section') <span class="section-index">{{ $numberOfSections + 1 }}</span> / <span class="total-section">{{ $numberOfSections }}</span></span>
+                <span class="number-of-section">
+                    @lang('lang.section')
+                    <span class="section-index"></span> /
+                    <span class="total-section"></span></span>
                 <div class="right-header-section">
                     <a href="" class="zoom-in-btn zoom-btn">
                         <span class="zoom-icon"></span>
@@ -56,11 +59,9 @@
                     <span>@lang('lang.continue_next_section')</span>
                 </div>
                 <ul class="section-select-options">
-                    @for($i = 1; $i <= $numberOfSections; $i++)
-                        <li>
-                            <span>@lang('lang.go_to_section', ['part' => $i])</span>
-                        </li>
-                    @endfor
+                    <li>
+                        <span>@lang('lang.go_to_section', ['index' => 1])</span>
+                    </li>
                     <li>
                         <span>@lang('lang.submit_form')</span>
                     </li>

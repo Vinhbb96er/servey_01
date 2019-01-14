@@ -173,6 +173,7 @@ return [
         'confirm_remove_option_and_section_redirect' => 'Are you sure want to remove this redirect option and all redirect sections corresponding?',
         'can_not_add_redirect' => 'You can not add redirect question in redirect section!',
         'only_can_contain_one_redirect' => 'Each section only can contain one redirect question!',
+        'can_not_merge_section' => 'You can not merge two section has contain redirect question!',
     ],
 
     /*

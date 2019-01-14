@@ -298,7 +298,7 @@ class SurveyController extends Controller
         // check survey owner authorization
         // check survey exists with token manage and get data
         $survey = $this->surveyRepository->getSurveyByTokenManage($tokenManage);
-
+// return ($survey);
         if (Auth::user()->cannot('edit', $survey)) {
             return view('clients.layout.404');
         }

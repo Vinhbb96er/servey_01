@@ -1,4 +1,5 @@
-<div class="redirect-section-block redirect-section-{{ $answerRedirectId }}">
+<div class="redirect-section-block redirect-section-{{ $answerRedirectId }}"
+    data-number-redirect-section="" data-redirect-id="{{ $answerRedirectId }}">
     <span class="redirect-section-label redirect-section-label-{{ $answerRedirectId }}"
         title="{{ $answerRedirectContent }}">
         {{ $answerRedirectContent }}
@@ -8,6 +9,5 @@
         'questionId' => $questionId,
         'answerId' => $answerId,
         'optionId' => $optionId,
-        'numberOfSections' => $numberOfSections,
     ])
 </div>

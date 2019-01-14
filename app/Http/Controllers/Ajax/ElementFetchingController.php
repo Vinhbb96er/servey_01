@@ -15,7 +15,6 @@ class ElementFetchingController extends Controller
             ]);
         }
 
-        $numberOfSections = $request->numberOfSections;
         $sectionId = $request->sectionId;
         $questionId = $request->questionId;
         $answerId = $request->answerId;
@@ -24,7 +23,6 @@ class ElementFetchingController extends Controller
         return response()->json([
             'success' => true,
             'html' => view('clients.survey.elements.section', compact(
-                'numberOfSections',
                 'sectionId',
                 'questionId',
                 'answerId',
@@ -300,7 +298,6 @@ class ElementFetchingController extends Controller
         }
 
         $data = $request->only(
-            'numberOfSections',
             'sectionId',
             'questionId',
             'redirectSectionData',
@@ -320,12 +317,11 @@ class ElementFetchingController extends Controller
                 'questionId' => $redirectSection['questionId'],
                 'answerId' => $redirectSection['answerId'],
                 'optionId' => config('settings.survey.option.first'),
-                'numberOfSections' => $data['numberOfSections'],
             ])->render();
         }
 
-        $image = $data['imageURL'] 
-            ? view('clients.survey.elements.image-question')->with(['imageURL' => $data['imageURL']])->render() 
+        $image = $data['imageURL']
+            ? view('clients.survey.elements.image-question')->with(['imageURL' => $data['imageURL']])->render()
             : null;
 
         return response()->json([
@@ -349,8 +345,7 @@ class ElementFetchingController extends Controller
             'answerRedirectContent',
             'sectionId',
             'questionId',
-            'answerId',
-            'numberOfSections'
+            'answerId'
         );
 
         $data['optionId'] = config('settings.survey.option.first');

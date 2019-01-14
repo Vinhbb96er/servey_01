@@ -28,7 +28,7 @@ class Answer extends Model
 
     public function results()
     {
-         return $this->hasMany(Result::class)->withTrashed();
+        return $this->hasMany(Result::class)->withTrashed();
     }
 
     public function settings()
@@ -64,5 +64,10 @@ class Answer extends Model
     public function getUrlMediaAttribute()
     {
         return $this->media()->withTrashed()->first()->url;
+    }
+
+    public function redirectSections()
+    {
+        return $this->hasMany(Section::class, 'redirect_id', 'id')->withTrashed()->orderBy('order');
     }
 }

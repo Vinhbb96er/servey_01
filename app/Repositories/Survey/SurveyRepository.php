@@ -156,6 +156,7 @@ class SurveyRepository extends BaseRepository implements SurveyInterface
         $survey->settings()->createMany($settingsData);
 
         $orderSection = 0;
+        $dataRedirectId = [];
 
         // create sections
         foreach ($data['sections'] as $section) {
@@ -163,6 +164,7 @@ class SurveyRepository extends BaseRepository implements SurveyInterface
             $sectionData['description'] = $section['description'];
             $sectionData['order'] = ++ $orderSection;
             $sectionData['update'] = config('settings.survey.section_update.default');
+            $sectionData['redirect_id'] = isset($section['redirect_id']) ? $dataRedirectId[$section['redirect_id']] : null;
 
             $sectionCreated = $survey->sections()->create($sectionData);
 
@@ -219,6 +221,11 @@ class SurveyRepository extends BaseRepository implements SurveyInterface
                                 $answerMedia['type'] = config('settings.media_type.image');
 
                                 $answerCreated->media()->create($answerMedia);
+                            }
+
+                            // save answer redirect id if question type is redirect
+                            if ($question['type'] == config('settings.question_type.redirect')) {
+                                $dataRedirectId[$answer['id']] = $answerCreated->id;
                             }
                         }
                     }
@@ -806,12 +813,14 @@ class SurveyRepository extends BaseRepository implements SurveyInterface
                                 $query->with('media', 'settings');
                             }, 
                             'settings', 
-                            'media',
+                            'media'
                         ]);
-                    },
+                    }
                 ]);
-            },
+            }
         ])->where('token_manage', $token)->first();
+
+        $survey->redirectSections = $redirectSections = $survey->sections->where('redirect_id', '!=', 0)->groupBy('redirect_id');
 
         if (!$survey) {
             throw new Exception("Error Processing Request", 1);

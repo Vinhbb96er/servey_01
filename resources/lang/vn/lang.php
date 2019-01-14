@@ -173,6 +173,7 @@ return [
         'confirm_remove_option_and_section_redirect' => 'Bạn có chắc chắn muốn xóa tùy chọn chuyển hướng này và tất cả các phần chuyển hướng tương ứng?',
         'can_not_add_redirect' => 'Bạn không thể thêm câu hỏi chuyển hưóng trong phần chuyển hưóng!',
         'only_can_contain_one_redirect' => 'Mỗi phần chỉ có thể chứa một câu hỏi chuyển hưóng!',
+        'can_not_merge_section' => 'Bạn không thể hợp nhất 2 phần có chứa câu hỏi chuyển hướng!',
     ],
 
     /*
